@@ -1,0 +1,14 @@
+/*========================================================================================
+Основной файл стилей, который импортирует все остальные SCSS файлы и скомпилируется в CSS 
+=========================================================================================*/
+@use "./source/fonts" as *;
+
+@use "./source/mixins" as *;
+@use "./source/functions" as *;
+@use "./source/placeholders" as *;
+@use "./source/keyframes" as *;
+@use "./source/utils" as *;
+
+@use "../../../components/Layout/Header/Header" as *;
+@use "../../../components/Spec/NavDesktop/NavDesktop" as *;
+@use "../../../components/Spec/NavMobile/NavMObile" as *;

@@ -1,0 +1,29 @@
+@use '../../../assets/src/scss/source/mixins' as *;
+
+.header {
+  /* Бургер-меню (мобильное) */
+
+  &__nav {
+    display: none; // прячем стандартное меню
+  }
+
+  &__burger {
+    display: flex; // показываем бургер
+  }
+
+  @include lg {
+    &__nav {
+      display: block;
+    }
+
+    &__burger {
+      display: none;
+    }
+  }
+
+  @media (min-width: 370px) {
+    &__burger {
+      margin-left: 35px;
+    }
+  }
+}
