@@ -1,71 +1,92 @@
 import fs from 'fs-extra';
 import path from 'path';
-import fonter from 'fonter';
+import { Font } from 'fonteditor-core';
 import ttf2woff2 from 'ttf2woff2';
 
-import dotenv from "dotenv";
-dotenv.config();
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const SITE_NAME = process.env.SITE_NAME || "wp"; // .env или docker
-
-const fontsDir = './assets/fonts';
+const fontsDir = path.join(__dirname, '../public/fonts');
 const woffDir = path.join(fontsDir, 'WOFF2');
-const fontFacesFile = './assets/src/scss/source/fonts.scss';
+const fontFacesFile = path.join(__dirname, '../src/styles/fonts.css');
 
 const italicRegex = /italic/i;
 
-// Шаблон для @font-face
+// Шаблон @font-face
 const fontFaceTemplate = (name, file, weight, style) => `@font-face {
-  font-family: ${name};
+  font-family: "${name}";
+  src: url("/fonts/WOFF2/${file}.woff2") format("woff2");
   font-display: swap;
-  src: url("/${SITE_NAME}/wp-content/themes/classic/assets/fonts/WOFF2/${file}.woff2") format("woff2");
   font-weight: ${weight};
   font-style: ${style};
-}\n\n`;
+}
 
-// Конвертация OTF → TTF
+`;
+
+// 🔹 OTF → TTF
 async function otfToTtf() {
   await fs.ensureDir(fontsDir);
   const files = await fs.readdir(fontsDir);
 
   for (const file of files) {
-    if (file.endsWith('.otf')) {
-      const input = path.join(fontsDir, file);
-      const output = path.join(fontsDir, file.replace('.otf', '.ttf'));
-      const buffer = fs.readFileSync(input);
-      const ttfBuffer = fonter({ formats: ['ttf'], buffer });
-      fs.writeFileSync(output, ttfBuffer);
-      console.log(` ${file} → TTF`);
+    if (!file.endsWith('.otf')) continue;
+
+    const input = path.join(fontsDir, file);
+    const output = path.join(fontsDir, file.replace('.otf', '.ttf'));
+
+    if (await fs.pathExists(output)) {
+      console.log(`⏭ ${file} уже конвертирован`);
+      continue;
+    }
+
+    try {
+      const buffer = await fs.readFile(input);
+      const font = Font.create(buffer, { type: 'otf' });
+      const ttfBuffer = font.write({ type: 'ttf' });
+      await fs.writeFile(output, Buffer.from(ttfBuffer));
+      console.log(`✔ ${file} → TTF`);
+    } catch (e) {
+      console.error(`❌ Ошибка при конвертации ${file}:`, e.message);
     }
   }
 }
 
-// Конвертация TTF → WOFF2
+// 🔹 TTF → WOFF2 (как у тебя было)
 async function ttfToWoff() {
   await fs.ensureDir(woffDir);
   const files = await fs.readdir(fontsDir);
 
   for (const file of files) {
-    if (file.endsWith('.ttf')) {
-      const input = path.join(fontsDir, file);
-      const output = path.join(woffDir, file.replace('.ttf', '.woff2'));
-      const buffer = fs.readFileSync(input);
+    if (!file.endsWith('.ttf')) continue;
+
+    const input = path.join(fontsDir, file);
+    const output = path.join(woffDir, file.replace('.ttf', '.woff2'));
+
+    if (await fs.pathExists(output)) continue;
+
+    try {
+      console.log(`⏳ Конвертируем ${file} → WOFF2...`);
+      const buffer = await fs.readFile(input);
       const woffBuffer = ttf2woff2(buffer);
-      fs.writeFileSync(output, woffBuffer);
-      console.log(` ${file} → WOFF2`);
+      await fs.writeFile(output, woffBuffer);
+      await fs.remove(input);
+      console.log(`✔ ${file} → WOFF2`);
+    } catch (e) {
+      console.error(`❌ Ошибка при ${file}:`, e.message);
     }
   }
 }
 
-// Генерация SCSS с правильными весами
+// 🔹 Генерация fonts.css (твоя старая логика)
 async function fontStyle() {
   const fontFiles = await fs.readdir(woffDir);
   if (!fontFiles.length) {
-    console.log('Нет WOFF2 файлов для генерации SCSS');
+    console.log('⚠ Нет WOFF2 файлов для генерации fonts.css');
     return;
   }
 
-  // Перезаписываем файл
+  await fs.ensureFile(fontFacesFile);
   await fs.writeFile(fontFacesFile, '');
   const processedFonts = new Set();
 
@@ -77,7 +98,6 @@ async function fontStyle() {
 
     if (italicRegex.test(lower)) style = 'italic';
 
-    // точные совпадения через дефис
     if (/-ultrablack/i.test(fileName)) weight = 950;
     else if (/-extrablack/i.test(fileName)) weight = 950;
     else if (/-black/i.test(fileName)) weight = 900;
@@ -94,11 +114,7 @@ async function fontStyle() {
     else if (/-ultralight/i.test(fileName)) weight = 200;
 
     // имя шрифта до первого дефиса
-    if (fileName.includes('-')) {
-      name = fileName.split('-')[0];
-    } else {
-      name = fileName.replace(/[_\s]+/g, '');
-    }
+    if (fileName.includes('-')) name = fileName.split('-')[0];
 
     name = name.replace(/[_\s]+/g, '');
     return { name, weight, style };
@@ -114,14 +130,16 @@ async function fontStyle() {
     processedFonts.add(fileName);
   }
 
-  console.log('fonts.scss перезаписан и обновлён!');
+  console.log('✔ fonts.css обновлён!');
 }
 
-// Основной запуск
+// 🔹 Основной запуск
 async function run() {
+  console.log('🚀 Обработка шрифтов...\n');
   await otfToTtf();
   await ttfToWoff();
   await fontStyle();
+  console.log('\n✅ Всё готово!');
 }
 
-run();
+run().catch(console.error);

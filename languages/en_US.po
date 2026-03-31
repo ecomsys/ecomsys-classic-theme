@@ -1,0 +1,161 @@
+# Copyright (C) 2026 ecomsys
+# This file is distributed under the same license as the Ecomsys Classic Theme theme.
+msgid ""
+msgstr ""
+"Project-Id-Version: Ecomsys Classic Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/classic\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-03-31T08:21:04+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ecomsys-classic\n"
+"Language: en_US\n"
+
+#: style.css
+#. Theme Name of the theme
+msgid "Ecomsys Classic Theme"
+msgstr ""
+
+#: style.css
+#. Description of the theme
+msgid "Start Classic Theme (Tailwind + Hot Reload)"
+msgstr ""
+
+#: style.css
+#. Author of the theme
+msgid "ecomsys"
+msgstr ""
+
+#: style.css
+#. Author URI of the theme
+msgid "http://ecomsys.ru"
+msgstr ""
+
+#: 404.php:19
+msgid "Oops! That page can&rsquo;t be found."
+msgstr ""
+
+#: 404.php:23
+msgid ""
+"It looks like nothing was found at this location. Maybe try one of the "
+"links below or a search?"
+msgstr ""
+
+#: 404.php:33
+msgid "Most Used Categories"
+msgstr ""
+
+#: 404.php:52
+#. translators: %1$s: smiley
+#, php-format
+msgid "Try looking in the monthly archives. %1$s"
+msgstr ""
+
+#: comments.php:35
+#. translators: 1: title.
+#, php-format
+msgid "One thought on &ldquo;%1$s&rdquo;"
+msgstr ""
+
+#: comments.php:68
+msgid "Comments are closed."
+msgstr ""
+
+#: components/Layout/Footer/index.php:13
+msgid "https://wordpress.org/"
+msgstr ""
+
+#: components/Layout/Footer/index.php:16
+#. translators: %s: CMS name, i.e. WordPress.
+#, php-format
+msgid "Proudly powered by %s"
+msgstr ""
+
+#: components/Layout/Footer/index.php:22
+#. translators: 1: Theme name, 2: Theme author.
+#, php-format
+msgid "Theme: %1$s by %2$s."
+msgstr ""
+
+#: functions.php:57
+msgid "Primary"
+msgstr ""
+
+#: functions.php:58
+msgid "Footer"
+msgstr ""
+
+#: functions.php:132
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:134
+msgid "Add widgets here."
+msgstr ""
+
+#: header.php:37
+msgid "Skip to content"
+msgstr ""
+
+#: inc/template-tags.php:129
+#, php-format
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr ""
+
+#: inc/template-tags.php:144
+#: template-parts/content-page.php:39
+#. translators: %s: Name of current post. Only visible to screen readers
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: search.php:22
+#. translators: %s: search query.
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: template-parts/content-none.php:14
+msgid "Nothing Found"
+msgstr ""
+
+#: template-parts/content-none.php:24
+#. translators: 1: link to WP admin new post page.
+#, php-format
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: template-parts/content-none.php:37
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: template-parts/content-none.php:44
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: template-parts/content-page.php:25
+msgid "Pages:"
+msgstr ""
+
+#: comments.php:41
+#. translators: 1: comment count number, 2: title.
+#, php-format
+msgctxt "comments title"
+msgid "%1$s thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/template-tags.php:57
+#, php-format
+msgctxt "post author"
+msgid "by %s"
+msgstr ""
